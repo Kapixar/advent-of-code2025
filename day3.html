@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="module">
+        const lines = await fetch('txt/day3.txt').then(response => response.text());
+
+        let suma = 0;
+        for (const line of lines.split('\n')) {
+            suma += findLargest(line);
+        }
+
+        // console.log(sum);
+        
+
+        function findLargest(line) {
+            line = line.trim();
+            const dict = {
+                0: [],
+                1: [],
+                2: [],
+                3: [],
+                4: [],
+                5: [],
+                6: [],
+                7: [],
+                8: [],
+                9: []
+            }
+
+            let i = 0;
+            for (const range of line.split('')) {                
+                dict[range].push(i++);
+            }
+
+            // concat all arrays reversely
+            let concated = [];
+            for (let j = 9; j >= 0; j--) {
+                concated = concated.concat(dict[j]);
+            }
+
+            
+            
+            // console.log(concated);
+            
+            // const lastIndex = line.length - 1
+
+            // const decimalIdx = concated[0] !== lastIndex ? concated[0] : concated[1];
+
+            // let j = 0;
+            // let intIdx = 0;
+            // while (concated[intIdx] <= decimalIdx) {
+            //     intIdx = j++ 
+            // }
+
+            // intIdx = concated[intIdx];
+            
+            // console.log(line, line.length, decimalIdx, intIdx);
+            
+            
+
+            // return parseInt(line[decimalIdx]) * 10 + parseInt(line[intIdx]);
+            
+            const batteries = 12; //part one is 2
+
+            let sum = 0;
+
+            let minIdx = 0;
+            for (let k = 0; k < batteries; k++) {
+                const maxIdx = line.length - batteries + k;
+                // console.log(minIdx, maxIdx);
+                
+                let selectedIdx = concated[0]
+                let x = 0;
+                
+                while(concated[x] < minIdx || concated[x] > maxIdx) {
+                    x++;
+                    // console.log("conc: ", x, line[concated[x]], concated[x], concated[x] <= minIdx , concated[x] > maxIdx);
+                }
+                selectedIdx = concated[x];
+                
+                minIdx =selectedIdx + 1;
+
+                // console.log(selectedIdx);
+
+                sum = sum * 10 + parseInt(line[selectedIdx]);
+            }
+            
+            return sum;
+        }
+
+        console.log(suma);
+        
+    </script>
+</body>
+</html>
