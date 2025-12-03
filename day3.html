@@ -19,6 +19,7 @@
 
         function findLargest(line) {
             line = line.trim();
+
             const dict = {
                 0: [],
                 1: [],
@@ -32,47 +33,25 @@
                 9: []
             }
 
+            // fill the dict
             let i = 0;
-            for (const range of line.split('')) {                
-                dict[range].push(i++);
-            }
+            for (const range of line.split('')) dict[range].push(i++);
+            
 
             // concat all arrays reversely
             let concated = [];
-            for (let j = 9; j >= 0; j--) {
-                concated = concated.concat(dict[j]);
-            }
-
+            for (let j = 9; j >= 0; j--) concated = concated.concat(dict[j]);
             
-            
-            // console.log(concated);
-            
-            // const lastIndex = line.length - 1
-
-            // const decimalIdx = concated[0] !== lastIndex ? concated[0] : concated[1];
-
-            // let j = 0;
-            // let intIdx = 0;
-            // while (concated[intIdx] <= decimalIdx) {
-            //     intIdx = j++ 
-            // }
-
-            // intIdx = concated[intIdx];
-            
-            // console.log(line, line.length, decimalIdx, intIdx);
-            
-            
-
-            // return parseInt(line[decimalIdx]) * 10 + parseInt(line[intIdx]);
             
             const batteries = 12; //part one is 2
 
             let sum = 0;
-
+            // min index to choose
             let minIdx = 0;
-            for (let k = 0; k < batteries; k++) {
-                const maxIdx = line.length - batteries + k;
-                // console.log(minIdx, maxIdx);
+
+            for (let b = 0; b < batteries; b++) {
+                // max index to choose
+                const maxIdx = line.length - batteries + b;
                 
                 let selectedIdx = concated[0]
                 let x = 0;
@@ -83,9 +62,8 @@
                 }
                 selectedIdx = concated[x];
                 
-                minIdx =selectedIdx + 1;
+                minIdx = selectedIdx + 1;
 
-                // console.log(selectedIdx);
 
                 sum = sum * 10 + parseInt(line[selectedIdx]);
             }
