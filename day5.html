@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="module">
+        const lines = (await fetch('txt/day5.txt').then(response => response.text())).split('\n').map(x => x.trim());
+
+
+        let res = 0;
+
+        let mins = []
+        let maxs = []
+
+        let i = 0;
+        while (lines[i] !== "") {
+            const [min, max] = lines[i].split("-").map(x => parseInt(x));
+
+            // Insert min into mins at sorted position
+            let insertIndex = 0;
+            while (insertIndex < mins.length && mins[insertIndex] < min) insertIndex++;
+            mins.splice(insertIndex, 0, min);
+
+            // Insert max into maxs at the same position
+            let insertIndexMax = 0;
+            while (insertIndexMax < maxs.length && maxs[insertIndexMax] < max) insertIndexMax++;
+            maxs.splice(insertIndexMax, 0, max);
+
+            i++;
+        }
+
+        // part 2
+        for (let m = 0; m < mins.length; m++) {
+            const min = mins[m];
+            const max = maxs[m];
+
+            res += max - min + 1;
+
+            let next_i = 1;
+            while (next_i < mins.length && mins[m + next_i] <= max) {
+                mins[m + next_i] = max + 1;
+                next_i++;
+            }
+        }
+
+        // part 1
+        // while( i < lines.length ) {
+        //     let rangeIndex = 0;
+        //     const num = parseInt(lines[i]);
+
+        //     while (rangeIndex < mins.length) {
+        //         if (num >= mins[rangeIndex] && num <= maxs[rangeIndex]) {
+        //             res++;
+        //             break;
+        //         }
+        //         rangeIndex++;
+        //     }
+        //     i++;
+        // }
+
+        console.log(res);
+    </script>
+</body>
+
+</html>
