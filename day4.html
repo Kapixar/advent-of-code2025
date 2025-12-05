@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script type="module">
+        const lines = (await fetch('txt/day4.txt').then(response => response.text())).split('\n').map(x => x.trim());
+        
+        const grid = lines.map(line => line.split(''));
+        const height = grid.length;
+        const width = grid[0].length;
+        let res = 0;
+        
+        let turn = -1;
+        while( turn !== 0 ) {
+            turn = 0;
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    if (grid[y][x] !== '@') continue;
+                    let count = 0;
+                    for (let dy = -1; dy <= 1; dy++) {
+                        for (let dx = -1; dx <= 1; dx++) {
+                            if (dy === 0 && dx === 0) continue;
+                            const ny = y + dy;
+                            const nx = x + dx;
+                            if (ny >= 0 && ny < height && nx >= 0 && nx < width && grid[ny][nx] === '@') {
+                                count++;
+                            }
+                        }
+                    }
+                    if (count < 4) {
+                        res++;
+                        grid[y][x] = '.';
+                        turn++;
+                    }
+                }
+            }
+            console.log("turn");
+            
+        }
+        
+        console.log(res);
+    </script>
+</body>
+</html>
