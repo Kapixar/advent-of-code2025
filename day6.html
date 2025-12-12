@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p></p>
+    <script type="module">
+        const lines = (await fetch('txt/day6.txt').then(response => response.text())).split('\n');
+        
+        const operations = lines[4].split(RegExp('\\s+'));
+
+        let sum = 0;
+
+        let currentLine = 0;
+        let i = 0;
+        while(i < operations.length) {
+            
+            const op = operations[i];
+            
+            let result = 0;
+            let num_list = []
+            for(let j = 0; j < 4; j++) {                
+                if(lines[0][currentLine + j] === undefined) break;
+                const number1 = lines[0][currentLine + j].trim();
+                const number2 = lines[1][currentLine + j].trim();
+                const number3 = lines[2][currentLine + j].trim();
+                const number4 = lines[3][currentLine + j].trim();
+
+                const number = parseInt(`${number1}${number2}${number3}${number4}`);
+                console.log(number);
+                
+                result++;
+                if(isNaN(number)) break;
+                num_list.push(number);
+            }
+            
+            if(num_list.length > 0) {
+                if(op === '+') {
+                    console.log("+", num_list);
+                    
+                    const local_sum = num_list.reduce((a, b) => a + b, 0);
+                    sum += local_sum;
+                } else if(op === '*') {
+                    console.log("*", num_list);
+                    
+                    const local_product = num_list.reduce((a, b) => a * b, 1);
+                    sum += local_product;
+                }
+            } else {
+                // if(i == operations.length - 1) {
+                //     break;
+                // }
+            }
+            currentLine += result;
+            i++;
+        }
+        console.log(sum);
+
+        // 3370800121
+        // too low
+
+        
+        // 10834081628856254
+        // 10834081628856316
+        // to high
+
+    </script>
+</body>
+</html>
