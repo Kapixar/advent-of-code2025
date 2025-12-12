@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p></p>
+    <script type="module">
+        const lines = (await fetch('txt/day7_test.txt').then(response => response.text())).split('\n').map(line => line.trim());
+        
+        let sum = 0;
+
+        let previousLinesPositions = [Math.floor(lines[0].length / 2)];
+
+        for(const line of lines.slice(1)) {
+            let i = 0;
+            const newLinesPositions = [];
+            
+            console.log(line);
+            while(i < line.length) {
+                
+                if(line[i] === ".") {
+                    if(previousLinesPositions.includes(i)) {
+                        if(!newLinesPositions.includes(i)) {                        
+                            newLinesPositions.push(i);
+                        } else {
+                            console.log("MINUSSS");
+                            
+                            sum--;
+                        }
+                    }
+                } else if(previousLinesPositions.includes(i)) {
+                    if(!newLinesPositions.includes(i - 1)) {
+                        sum++;
+                        newLinesPositions.push(i - 1);
+                    }
+                    // if(!newLinesPositions.includes(i + 1)) {
+                    newLinesPositions.push(i + 1);
+                    sum++;
+                    // }
+                }
+                i++;
+            }
+            previousLinesPositions = newLinesPositions;
+            console.log(sum, previousLinesPositions);
+        }
+
+        console.log(sum);
+        
+
+    </script>
+</body>
+</html>
