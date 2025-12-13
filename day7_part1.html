@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p></p>
+    <script type="module">
+        const lines = (await fetch('txt/day7.txt').then(response => response.text())).split('\n').map(line => line.trim()).slice(1).filter((_, i) => i % 2 !== 0);
+        
+        let sum = 0;
+        let previousLinesPositions = [Math.floor(lines[0].length / 2)];
+
+
+        for(const line of lines) {
+            let i = 0;
+            const newLinesPositions = [];
+            
+            while(i < line.length) {
+                if(line[i] === ".") {
+                    if(previousLinesPositions.includes(i) && !newLinesPositions.includes(i)) newLinesPositions.push(i);
+                } else if(previousLinesPositions.includes(i)) {
+                    sum++;
+                    if(!newLinesPositions.includes(i - 1)) newLinesPositions.push(i - 1);
+                    newLinesPositions.push(i + 1);
+                }
+                
+                i++;
+            }
+            previousLinesPositions = newLinesPositions;
+            console.log(sum, previousLinesPositions);
+        }
+
+        console.log(sum);
+
+        // part 2 in js doesnt end
+        function checkDown(x, y) {
+            if(y >= lines.length) return 1;
+            
+            return lines[y][x] === "^" ? checkDown(x - 1, y + 1) + checkDown(x + 1, y + 1) : checkDown(x, y + 1);
+        }
+
+        console.log(checkDown(Math.floor(lines[0].length / 2), 0));
+        
+        
+
+    </script>
+</body>
+</html>
